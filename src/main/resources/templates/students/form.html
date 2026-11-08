@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="|${pageTitle} - 学生信息管理|">学生信息管理</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <span class="top-note">学生信息管理</span>
+</header>
+<main class="container form-container">
+  <p class="eyebrow">STUDENT PROFILE</p><h1 th:text="${pageTitle}">学生信息</h1><p class="subtitle">填写学生基本资料，带 * 的项目为必填。</p>
+  <form class="form-card" method="post" th:action="@{/students/save}" th:object="${student}">
+    <input type="hidden" th:field="*{id}">
+    <div class="form-grid">
+      <label>姓名 <span class="required">*</span><input th:field="*{name}" required maxlength="80" placeholder="请输入姓名"><small class="field-error" th:errors="*{name}"></small></label>
+      <label>学号 <span class="required">*</span><input th:field="*{studentNo}" required maxlength="32" placeholder="请输入学号"><small class="field-error" th:errors="*{studentNo}"></small></label>
+      <label>班级 <span class="required">*</span><input th:field="*{className}" required maxlength="100" placeholder="例如：计算机 1 班"><small class="field-error" th:errors="*{className}"></small></label>
+      <label>性别<select th:field="*{gender}"><option value="">请选择</option><option value="男">男</option><option value="女">女</option><option value="其他">其他</option></select><small class="field-error" th:errors="*{gender}"></small></label>
+      <label>联系电话<input th:field="*{phone}" maxlength="30" placeholder="请输入联系电话"><small class="field-error" th:errors="*{phone}"></small></label>
+      <label>邮箱<input th:field="*{email}" type="email" maxlength="150" placeholder="请输入邮箱"><small class="field-error" th:errors="*{email}"></small></label>
+    </div>
+    <div class="form-actions"><a class="button secondary" th:href="@{/}">取消</a><button class="button primary" type="submit">保存信息</button></div>
+  </form>
+</main>
+</body>
+</html>

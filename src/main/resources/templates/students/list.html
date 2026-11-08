@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>学生信息管理</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <span class="top-note">学生信息管理</span>
+</header>
+<main class="container">
+  <section class="heading">
+    <div><p class="eyebrow">STUDENT DIRECTORY</p><h1>学生信息</h1><p class="subtitle">集中管理学生档案，快速查找和维护信息。</p></div>
+    <a class="button primary" th:href="@{/students/new}">＋ 新增学生</a>
+  </section>
+
+  <div class="notice" th:if="${notice}" th:text="${notice}"></div>
+  <form class="toolbar" method="get" th:action="@{/}">
+    <label class="search"><span aria-hidden="true">⌕</span><input name="q" type="search" th:value="${q}" placeholder="搜索姓名、学号或班级"></label>
+    <button class="button secondary" type="submit">搜索</button>
+    <span class="count" th:text="|共 ${students.size()} 位学生|">共 0 位学生</span>
+  </form>
+
+  <section class="table-card">
+    <div class="empty" th:if="${students.isEmpty()}"><span class="empty-icon">▤</span><strong>还没有学生信息</strong><span>新增一条记录，开始管理学生档案。</span><a class="button primary" th:href="@{/students/new}">新增学生</a></div>
+    <div class="table-scroll" th:unless="${students.isEmpty()}">
+      <table><thead><tr><th>学生</th><th>学号</th><th>班级</th><th>性别</th><th>联系电话</th><th>操作</th></tr></thead>
+        <tbody><tr th:each="student : ${students}">
+          <td><div class="student"><span class="avatar" th:text="${#strings.substring(student.name, 0, 1)}">学</span><strong th:text="${student.name}">姓名</strong></div></td>
+          <td class="muted" th:text="${student.studentNo}">学号</td>
+          <td><span class="badge" th:text="${student.className}">班级</span></td>
+          <td th:text="${student.gender == null || student.gender.isBlank() ? '—' : student.gender}">性别</td>
+          <td class="muted" th:text="${student.phone == null || student.phone.isBlank() ? '—' : student.phone}">电话</td>
+          <td class="actions"><a class="text-link" th:href="@{/students/{id}/edit(id=${student.id})}">编辑</a>
+            <form class="inline" method="post" th:action="@{/students/{id}/delete(id=${student.id})}" onsubmit="return confirm('确定删除这条学生记录吗？此操作无法撤销。')">
+              <button class="text-link danger" type="submit">删除</button>
+            </form>
+          </td>
+        </tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

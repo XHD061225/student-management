@@ -1,64 +1,43 @@
-# 学生信息管理系统
+# 学生信息管理系统（Java 版）
 
-基于 **Vue 2 + Laravel 9 + MySQL 8 + Redis 7** 的学生信息管理 Web 应用起步项目，提供学生信息的新增、查询、编辑、删除和分页功能。
+已提供一个可本地运行的 **Java + Spring Boot + Thymeleaf + H2** 学生信息管理网页。无需安装 Python、PHP、Node.js、MySQL 或 Redis；网页由 Java 服务提供，数据保存在本机 H2 文件数据库中。
 
-## 项目结构
+> 当前 Java 版是仓库根目录的主项目。原先的 `backend/`（Laravel）和 `frontend/`（Vue）目录暂时保留，运行本 Java 版不需要使用它们。
 
-```text
-.
-├── backend/                  # Laravel 9 REST API
-├── frontend/                 # Vue 2 单页应用
-├── docker-compose.yml         # MySQL 8、Redis 7 开发服务
-└── README.md
-```
+## 需要安装
 
-## 环境要求
+- JDK 17 或更高版本
+- Apache Maven 3.6.3 或更高版本
 
-- PHP 8.0.2+、Composer
-- Node.js 14+、npm
-- Docker 和 Docker Compose（或本机安装 MySQL 8、Redis 7）
-
-## 启动数据库
-
-在项目根目录运行：
+检查安装：
 
 ```bash
-docker compose up -d
+java -version
+mvn -version
 ```
 
-Compose 默认创建数据库 `student_management`，MySQL 端口 `3306`，Redis 端口 `6379`。
+## 启动
 
-## 启动 Laravel API
+在仓库根目录执行：
 
 ```bash
-cd backend
-cp .env.example .env
-composer install
-php artisan key:generate
-php artisan migrate
-php artisan serve
+mvn spring-boot:run
 ```
 
-API 默认地址：`http://127.0.0.1:8000/api`。学生接口为 `GET/POST /api/students`、`GET/PUT/DELETE /api/students/{id}`。`.env.example` 已配置本项目 Compose 服务的数据库及 Redis 连接参数。
+启动完成后，在浏览器打开 <http://localhost:8080>。
 
-## 启动 Vue 前端
-
-另开终端：
+也可以先打包，再运行：
 
 ```bash
-cd frontend
-npm install
-npm run serve
+mvn clean package
+java -jar target/student-management-1.0.0.jar
 ```
 
-打开终端输出的本地地址（通常是 `http://localhost:8080`）。前端默认访问 `http://localhost:8000/api`；如需修改，在 `frontend/.env.local` 中设置：
+## 功能
 
-```dotenv
-VUE_APP_API_BASE_URL=http://localhost:8000/api
-```
+- 学生信息列表、姓名/学号/班级关键词搜索
+- 新增、编辑、删除学生信息
+- 学号唯一校验及表单校验
+- H2 文件数据库持久化；数据文件保存在项目根目录的 `./data/` 下
 
-修改 API 地址后需要重启前端开发服务。
-
-## 说明
-
-这是可继续扩展的基础项目，当前未包含用户登录、角色权限及生产环境部署配置。请勿将开发用数据库密码直接用于生产环境。
+无需另外启动数据库服务。默认开发配置启用了 H2 控制台，仅供本机开发使用。部署到公开网络前，请配置正式数据库、访问控制和安全设置。
