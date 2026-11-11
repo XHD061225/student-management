@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="|${student.name} - 个人资料|">个人资料</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
+  <span class="top-note">个人资料</span>
+</header>
+<main class="container detail-container">
+  <section class="detail-header">
+    <div class="student-summary">
+      <div class="avatar large" th:text="${#strings.substring(student.name, 0, 1)}">学</div>
+      <div>
+        <p class="eyebrow">STUDENT PROFILE</p>
+        <h1 th:text="${student.name}">姓名</h1>
+        <p class="subtitle" th:text="|学号：${student.studentNo} · 班级：${student.className}|">学号 · 班级</p>
+      </div>
+    </div>
+    <a class="button secondary" th:href="@{/students/{id}/edit(id=${student.id})}">编辑资料</a>
+  </section>
+
+  <div class="info-grid">
+    <section class="detail-card">
+      <h2>个人资料</h2>
+      <dl class="info-list">
+        <div><dt>性别</dt><dd th:text="${student.gender == null || student.gender.isBlank() ? '—' : student.gender}">—</dd></div>
+        <div><dt>生日</dt><dd th:text="${student.birthday == null || student.birthday.isBlank() ? '—' : student.birthday}">—</dd></div>
+        <div><dt>专业</dt><dd th:text="${student.major == null || student.major.isBlank() ? '—' : student.major}">—</dd></div>
+        <div><dt>籍贯</dt><dd th:text="${student.hometown == null || student.hometown.isBlank() ? '—' : student.hometown}">—</dd></div>
+        <div><dt>联系电话</dt><dd th:text="${student.phone == null || student.phone.isBlank() ? '—' : student.phone}">—</dd></div>
+        <div><dt>邮箱</dt><dd th:text="${student.email == null || student.email.isBlank() ? '—' : student.email}">—</dd></div>
+        <div><dt>家庭住址</dt><dd th:text="${student.address == null || student.address.isBlank() ? '—' : student.address}">—</dd></div>
+      </dl>
+      <div class="remark-box">
+        <h3>个人简介</h3>
+        <p th:text="${student.remark == null || student.remark.isBlank() ? '暂无简介。' : student.remark}">暂无简介。</p>
+      </div>
+    </section>
+
+    <section class="detail-card">
+      <h2>成绩概览</h2>
+      <div class="empty mini" th:if="${grades.isEmpty()}"><span>暂无成绩记录</span></div>
+      <ul class="list-stack" th:unless="${grades.isEmpty()}">
+        <li th:each="grade : ${grades}">
+          <div><strong th:text="${grade.subject}">科目</strong><span th:text="${grade.term}">学期</span></div>
+          <span class="score-badge" th:text="${grade.score}">90</span>
+        </li>
+      </ul>
+    </section>
+
+    <section class="detail-card">
+      <h2>获奖情况</h2>
+      <div class="empty mini" th:if="${awards.isEmpty()}"><span>暂无获奖记录</span></div>
+      <ul class="list-stack" th:unless="${awards.isEmpty()}">
+        <li th:each="award : ${awards}">
+          <div>
+            <strong th:text="${award.title}">奖项</strong>
+            <span th:text="|${award.level} · ${award.awardDate}|">校级 · 日期</span>
+          </div>
+          <span class="award-tag" th:text="${award.level}">级别</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</main>
+</body>
+</html>

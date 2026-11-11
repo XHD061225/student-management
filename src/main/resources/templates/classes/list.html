@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>班级管理</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
+  <span class="top-note">班级管理</span>
+</header>
+<main class="container">
+  <section class="heading">
+    <div><p class="eyebrow">CLASS MANAGEMENT</p><h1>班级管理</h1><p class="subtitle">用班级信息协同维护学生分组与教学安排。</p></div>
+    <a class="button primary" th:href="@{/classes/new}">＋ 新增班级</a>
+  </section>
+
+  <div class="notice" th:if="${notice}" th:text="${notice}"></div>
+  <section class="table-card">
+    <div class="empty" th:if="${classGroups.isEmpty()}"><span class="empty-icon">▤</span><strong>还没有班级信息</strong><span>添加班级后可统一管理学生分班和班务。</span><a class="button primary" th:href="@{/classes/new}">新增班级</a></div>
+    <div class="table-scroll" th:unless="${classGroups.isEmpty()}">
+      <table>
+        <thead>
+        <tr><th>班级名称</th><th>年级</th><th>班主任</th><th>教室</th><th>描述</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="group : ${classGroups}">
+          <td><strong th:text="${group.name}">班级名称</strong></td>
+          <td th:text="${group.grade == null || group.grade.isBlank() ? '—' : group.grade}">年级</td>
+          <td th:text="${group.advisor == null || group.advisor.isBlank() ? '—' : group.advisor}">班主任</td>
+          <td th:text="${group.room == null || group.room.isBlank() ? '—' : group.room}">教室</td>
+          <td class="muted" th:text="${group.description == null || group.description.isBlank() ? '—' : group.description}">描述</td>
+          <td class="actions">
+            <a class="text-link" th:href="@{/classes/{id}/edit(id=${group.id})}">编辑</a>
+            <form class="inline" method="post" th:action="@{/classes/{id}/delete(id=${group.id})}" onsubmit="return confirm('确定删除这个班级吗？')">
+              <button class="text-link danger" type="submit">删除</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="|${pageTitle} - 学生信息管理|">学生信息管理</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
+  <span class="top-note">成绩管理</span>
+</header>
+<main class="container form-container">
+  <p class="eyebrow">GRADE FORM</p><h1 th:text="${pageTitle}">新增成绩</h1><p class="subtitle">请填写学生成绩信息。</p>
+  <form class="form-card" method="post" th:action="@{/grades/save}" th:object="${gradeRecord}">
+    <input type="hidden" th:field="*{id}">
+    <div class="form-grid">
+      <label>学生 <span class="required">*</span>
+        <select th:field="*{student.id}">
+          <option value="">请选择学生</option>
+          <option th:each="student : ${students}" th:value="${student.id}" th:text="${student.name + ' - ' + student.studentNo}">学生</option>
+        </select>
+        <small class="field-error" th:errors="*{student}"></small>
+      </label>
+      <label>科目 <span class="required">*</span><input th:field="*{subject}" required maxlength="100" placeholder="例如：Java 编程"><small class="field-error" th:errors="*{subject}"></small></label>
+      <label>学期 <span class="required">*</span><input th:field="*{term}" required maxlength="20" placeholder="例如：2024-2025 第 1 学期"><small class="field-error" th:errors="*{term}"></small></label>
+      <label>成绩 <span class="required">*</span><input th:field="*{score}" type="number" min="0" max="100" step="0.01" required placeholder="0-100"><small class="field-error" th:errors="*{score}"></small></label>
+      <label>学分<input th:field="*{credit}" type="number" min="0" max="10" step="0.1" placeholder="例如：3.0"><small class="field-error" th:errors="*{credit}"></small></label>
+      <label class="wide-field">备注<textarea th:field="*{remark}" maxlength="200" rows="4" placeholder="例如：期中考试成绩"></textarea><small class="field-error" th:errors="*{remark}"></small></label>
+    </div>
+    <div class="form-actions"><a class="button secondary" th:href="@{/grades}">取消</a><button class="button primary" type="submit">保存成绩</button></div>
+  </form>
+</main>
+</body>
+</html>

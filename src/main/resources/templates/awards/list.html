@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>获奖记录</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
+  <span class="top-note">获奖记录</span>
+</header>
+<main class="container">
+  <section class="heading">
+    <div><p class="eyebrow">AWARD RECORDS</p><h1>获奖记录</h1><p class="subtitle">统筹记录学生在校内外的荣誉成果。</p></div>
+    <a class="button primary" th:href="@{/awards/new}">＋ 新增获奖</a>
+  </section>
+
+  <div class="notice" th:if="${notice}" th:text="${notice}"></div>
+  <section class="table-card">
+    <div class="empty" th:if="${awardRecords.isEmpty()}"><span class="empty-icon">▤</span><strong>还没有获奖记录</strong><span>记录学生荣誉，帮助形成完整成长档案。</span><a class="button primary" th:href="@{/awards/new}">新增获奖</a></div>
+    <div class="table-scroll" th:unless="${awardRecords.isEmpty()}">
+      <table>
+        <thead>
+        <tr><th>学生</th><th>奖项名称</th><th>级别</th><th>获奖日期</th><th>说明</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${awardRecords}">
+          <td><strong th:text="${item.student.name}">学生</strong></td>
+          <td th:text="${item.title}">奖项名称</td>
+          <td th:text="${item.level}">级别</td>
+          <td th:text="${item.awardDate}">获奖日期</td>
+          <td class="muted" th:text="${item.description == null || item.description.isBlank() ? '—' : item.description}">说明</td>
+          <td class="actions">
+            <a class="text-link" th:href="@{/awards/{id}/edit(id=${item.id})}">编辑</a>
+            <form class="inline" method="post" th:action="@{/awards/{id}/delete(id=${item.id})}" onsubmit="return confirm('确定删除这条获奖记录吗？')">
+              <button class="text-link danger" type="submit">删除</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

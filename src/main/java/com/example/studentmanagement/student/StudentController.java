@@ -14,9 +14,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class StudentController {
     private final StudentRepository students;
+    private final GradeRecordRepository gradeRecords;
+    private final AwardRecordRepository awardRecords;
 
-    public StudentController(StudentRepository students) {
+    public StudentController(StudentRepository students,
+                            GradeRecordRepository gradeRecords,
+                            AwardRecordRepository awardRecords) {
         this.students = students;
+        this.gradeRecords = gradeRecords;
+        this.awardRecords = awardRecords;
     }
 
     @GetMapping("/")
@@ -28,6 +34,19 @@ public class StudentController {
                         keyword, keyword, keyword));
         model.addAttribute("q", q);
         return "students/list";
+    }
+
+    @GetMapping("/students/{id}")
+    public String detail(@PathVariable Long id, Model model, RedirectAttributes redirect) {
+        return students.findById(id).map(student -> {
+            model.addAttribute("student", student);
+            model.addAttribute("grades", gradeRecords.findByStudentOrderByTermDescSubjectAsc(student));
+            model.addAttribute("awards", awardRecords.findByStudentOrderByAwardDateDesc(student));
+            return "students/detail";
+        }).orElseGet(() -> {
+            redirect.addFlashAttribute("notice", "没有找到这条学生记录。");
+            return "redirect:/";
+        });
     }
 
     @GetMapping("/students/new")

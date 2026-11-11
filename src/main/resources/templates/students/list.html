@@ -9,6 +9,12 @@
 <body>
 <header class="topbar">
   <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
   <span class="top-note">学生信息管理</span>
 </header>
 <main class="container">
@@ -34,7 +40,9 @@
           <td><span class="badge" th:text="${student.className}">班级</span></td>
           <td th:text="${student.gender == null || student.gender.isBlank() ? '—' : student.gender}">性别</td>
           <td class="muted" th:text="${student.phone == null || student.phone.isBlank() ? '—' : student.phone}">电话</td>
-          <td class="actions"><a class="text-link" th:href="@{/students/{id}/edit(id=${student.id})}">编辑</a>
+          <td class="actions">
+            <a class="text-link" th:href="@{/students/{id}(id=${student.id})}">查看</a>
+            <a class="text-link" th:href="@{/students/{id}/edit(id=${student.id})}">编辑</a>
             <form class="inline" method="post" th:action="@{/students/{id}/delete(id=${student.id})}" onsubmit="return confirm('确定删除这条学生记录吗？此操作无法撤销。')">
               <button class="text-link danger" type="submit">删除</button>
             </form>

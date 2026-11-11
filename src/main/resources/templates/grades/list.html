@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>成绩管理</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
+  <span class="top-note">成绩管理</span>
+</header>
+<main class="container">
+  <section class="heading">
+    <div><p class="eyebrow">GRADE MANAGEMENT</p><h1>成绩管理</h1><p class="subtitle">跟踪学生各学期课业表现和学分。</p></div>
+    <a class="button primary" th:href="@{/grades/new}">＋ 新增成绩</a>
+  </section>
+
+  <div class="notice" th:if="${notice}" th:text="${notice}"></div>
+  <section class="table-card">
+    <div class="empty" th:if="${gradeRecords.isEmpty()}"><span class="empty-icon">▤</span><strong>还没有成绩记录</strong><span>添加考试和课程成绩，支持查看学生成绩变化。</span><a class="button primary" th:href="@{/grades/new}">新增成绩</a></div>
+    <div class="table-scroll" th:unless="${gradeRecords.isEmpty()}">
+      <table>
+        <thead>
+        <tr><th>学生</th><th>科目</th><th>学期</th><th>成绩</th><th>学分</th><th>备注</th><th>操作</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${gradeRecords}">
+          <td><strong th:text="${item.student.name}">学生</strong></td>
+          <td th:text="${item.subject}">科目</td>
+          <td th:text="${item.term}">学期</td>
+          <td th:text="${item.score}">成绩</td>
+          <td th:text="${item.credit == null ? '—' : item.credit}">学分</td>
+          <td class="muted" th:text="${item.remark == null || item.remark.isBlank() ? '—' : item.remark}">备注</td>
+          <td class="actions">
+            <a class="text-link" th:href="@{/grades/{id}/edit(id=${item.id})}">编辑</a>
+            <form class="inline" method="post" th:action="@{/grades/{id}/delete(id=${item.id})}" onsubmit="return confirm('确定删除这条成绩记录吗？')">
+              <button class="text-link danger" type="submit">删除</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+</body>
+</html>

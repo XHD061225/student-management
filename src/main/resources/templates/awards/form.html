@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="|${pageTitle} - 学生信息管理|">学生信息管理</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
+  <span class="top-note">获奖记录</span>
+</header>
+<main class="container form-container">
+  <p class="eyebrow">AWARD FORM</p><h1 th:text="${pageTitle}">新增获奖记录</h1><p class="subtitle">请填写学生获奖详情。</p>
+  <form class="form-card" method="post" th:action="@{/awards/save}" th:object="${awardRecord}">
+    <input type="hidden" th:field="*{id}">
+    <div class="form-grid">
+      <label>学生 <span class="required">*</span>
+        <select th:field="*{student.id}">
+          <option value="">请选择学生</option>
+          <option th:each="student : ${students}" th:value="${student.id}" th:text="${student.name + ' - ' + student.studentNo}">学生</option>
+        </select>
+        <small class="field-error" th:errors="*{student}"></small>
+      </label>
+      <label>奖项名称 <span class="required">*</span><input th:field="*{title}" required maxlength="200" placeholder="例如：全国大学生创新创业大赛"><small class="field-error" th:errors="*{title}"></small></label>
+      <label>获奖级别 <span class="required">*</span><input th:field="*{level}" required maxlength="50" placeholder="例如：校级 / 市级 / 国家级"><small class="field-error" th:errors="*{level}"></small></label>
+      <label>获奖日期 <span class="required">*</span><input th:field="*{awardDate}" type="date" required><small class="field-error" th:errors="*{awardDate}"></small></label>
+      <label class="wide-field">说明<textarea th:field="*{description}" maxlength="500" rows="4" placeholder="请输入奖项说明或备注"></textarea><small class="field-error" th:errors="*{description}"></small></label>
+    </div>
+    <div class="form-actions"><a class="button secondary" th:href="@{/awards}">取消</a><button class="button primary" type="submit">保存记录</button></div>
+  </form>
+</main>
+</body>
+</html>

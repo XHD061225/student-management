@@ -9,6 +9,12 @@
 <body>
 <header class="topbar">
   <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
   <span class="top-note">学生信息管理</span>
 </header>
 <main class="container form-container">
@@ -22,6 +28,11 @@
       <label>性别<select th:field="*{gender}"><option value="">请选择</option><option value="男">男</option><option value="女">女</option><option value="其他">其他</option></select><small class="field-error" th:errors="*{gender}"></small></label>
       <label>联系电话<input th:field="*{phone}" maxlength="30" placeholder="请输入联系电话"><small class="field-error" th:errors="*{phone}"></small></label>
       <label>邮箱<input th:field="*{email}" type="email" maxlength="150" placeholder="请输入邮箱"><small class="field-error" th:errors="*{email}"></small></label>
+      <label>生日<input th:field="*{birthday}" maxlength="50" placeholder="例如：2005-05-12"><small class="field-error" th:errors="*{birthday}"></small></label>
+      <label>专业<input th:field="*{major}" maxlength="80" placeholder="请输入专业"><small class="field-error" th:errors="*{major}"></small></label>
+      <label>籍贯<input th:field="*{hometown}" maxlength="80" placeholder="请输入籍贯"><small class="field-error" th:errors="*{hometown}"></small></label>
+      <label>家庭住址<input th:field="*{address}" maxlength="200" placeholder="请输入家庭住址"><small class="field-error" th:errors="*{address}"></small></label>
+      <label class="wide-field">备注<textarea th:field="*{remark}" maxlength="500" rows="4" placeholder="请输入个人成长、兴趣或备注信息"></textarea><small class="field-error" th:errors="*{remark}"></small></label>
     </div>
     <div class="form-actions"><a class="button secondary" th:href="@{/}">取消</a><button class="button primary" type="submit">保存信息</button></div>
   </form>

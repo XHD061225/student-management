@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="|${pageTitle} - 学生信息管理|">学生信息管理</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" th:href="@{/}"><span class="brand-mark">学</span><span>校园管理系统</span></a>
+  <nav class="top-nav">
+    <a class="nav-link" th:href="@{/}">学生信息</a>
+    <a class="nav-link" th:href="@{/classes}">班级管理</a>
+    <a class="nav-link" th:href="@{/grades}">成绩管理</a>
+    <a class="nav-link" th:href="@{/awards}">获奖记录</a>
+  </nav>
+  <span class="top-note">班级管理</span>
+</header>
+<main class="container form-container">
+  <p class="eyebrow">CLASS FORM</p><h1 th:text="${pageTitle}">新增班级</h1><p class="subtitle">请输入班级的基本信息。</p>
+  <form class="form-card" method="post" th:action="@{/classes/save}" th:object="${classGroup}">
+    <input type="hidden" th:field="*{id}">
+    <div class="form-grid">
+      <label>班级名称 <span class="required">*</span><input th:field="*{name}" required maxlength="100" placeholder="例如：工程 2301 班"><small class="field-error" th:errors="*{name}"></small></label>
+      <label>年级<input th:field="*{grade}" maxlength="30" placeholder="例如：2023 级"><small class="field-error" th:errors="*{grade}"></small></label>
+      <label>班主任<input th:field="*{advisor}" maxlength="80" placeholder="请输入班主任姓名"><small class="field-error" th:errors="*{advisor}"></small></label>
+      <label>教室<input th:field="*{room}" maxlength="60" placeholder="例如：B-204"><small class="field-error" th:errors="*{room}"></small></label>
+      <label class="wide-field">班级描述<textarea th:field="*{description}" maxlength="500" rows="4" placeholder="请输入班级简介或管理说明"></textarea><small class="field-error" th:errors="*{description}"></small></label>
+    </div>
+    <div class="form-actions"><a class="button secondary" th:href="@{/classes}">取消</a><button class="button primary" type="submit">保存班级</button></div>
+  </form>
+</main>
+</body>
+</html>
